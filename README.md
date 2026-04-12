@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Dilakna H — Developer Portfolio
+Dilakna Godagamage - Portfolio
 
 <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" />
 <img src="https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask&logoColor=white" />
@@ -13,7 +13,7 @@
 
 **A modern, fully responsive personal portfolio website built with Python & Flask — deployed permanently for free.**
 
-[🌐 Live Demo](portfolio-rho-vert-79.vercel.app)
+[Live Demo](portfolio-rho-vert-79.vercel.app)
 
 </div>
 
@@ -28,11 +28,6 @@
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Local Development](#local-development)
-- [Deployment Guide (Free & Permanent)](#-deployment-guide-free--permanent)
-  - [Option 1: Render (Recommended)](#option-1-render-recommended-)
-  - [Option 2: Railway](#option-2-railway)
-  - [Option 3: Vercel (Static Export)](#option-3-vercel-static-export)
-  - [Option 4: GitHub Pages (Static Only)](#option-4-github-pages-static-only)
 - [Environment Variables](#-environment-variables)
 - [Migrating from Streamlit](#-migrating-from-streamlit)
 - [Contributing](#-contributing)
