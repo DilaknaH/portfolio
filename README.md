@@ -89,8 +89,7 @@ This portfolio is continuously being improved with new projects, features, and d
 
 Undergraduate | KDU | AI & Machine Learning Enthusiast 
 
-- [LinkedIn](https://www.linkedin.com/in/dilakna-godagamage-53166326b/)  
-- [Email](dilaknagodagamage@gmail.com)
+Feel free to connect with me through : [LinkedIn](https://www.linkedin.com/in/dilakna-godagamage-53166326b/) 
 
 ---
 
