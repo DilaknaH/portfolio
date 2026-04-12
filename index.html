@@ -1,0 +1,2678 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Dilakna Godagamage — AI Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #050812;
+        --bg2: #080d1a;
+        --bg3: #0c1228;
+        --bg4: #111930;
+        --bg5: #1a2440;
+        --cyan: #00d4ff;
+        --cyan2: #00aacc;
+        --cyan3: rgba(0, 212, 255, 0.15);
+        --cyan4: rgba(0, 212, 255, 0.06);
+        --cyan5: rgba(0, 212, 255, 0.03);
+        --violet: #7c3aed;
+        --violet2: #a855f7;
+        --violet3: rgba(124, 58, 237, 0.2);
+        --green: #10b981;
+        --txt: #e2e8f0;
+        --txt2: #94a3b8;
+        --txt3: #475569;
+        --txt4: #1e293b;
+        --border: rgba(0, 212, 255, 0.12);
+        --border2: rgba(0, 212, 255, 0.06);
+        --border3: rgba(148, 163, 184, 0.08);
+        --grotesk: "Space Grotesk", sans-serif;
+        --mono: "Space Mono", monospace;
+        --inter: "Inter", sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+
+      body {
+        font-family: var(--inter);
+        background: var(--bg);
+        color: var(--txt);
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      #neural-canvas {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.35;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9001;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 212, 255, 0.012) 2px,
+          rgba(0, 212, 255, 0.012) 4px
+        );
+      }
+
+      #c-dot {
+        position: fixed;
+        width: 5px;
+        height: 5px;
+        background: var(--cyan);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        box-shadow:
+          0 0 10px var(--cyan),
+          0 0 20px rgba(0, 212, 255, 0.5);
+        transition:
+          width 0.15s,
+          height 0.15s;
+      }
+      #c-ring {
+        position: fixed;
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(0, 212, 255, 0.4);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+          height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+          border-color 0.3s;
+      }
+      #c-ring.hov {
+        width: 56px;
+        height: 56px;
+        border-color: rgba(0, 212, 255, 0.2);
+        background: rgba(0, 212, 255, 0.03);
+      }
+
+      #prog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 1px;
+        background: linear-gradient(90deg, var(--cyan), var(--violet2));
+        z-index: 600;
+        width: 0%;
+        box-shadow: 0 0 8px var(--cyan);
+        transition: width 0.06s linear;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        min-height: 100vh;
+        position: relative;
+        z-index: 1;
+      }
+
+      aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        padding: 4rem 2.5rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        border-right: 1px solid var(--border2);
+        overflow: hidden;
+      }
+
+      .side-name {
+        font-family: var(--grotesk);
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--txt);
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .side-name .last {
+        color: var(--cyan);
+      }
+      .side-role {
+        font-family: var(--grotesk);
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--txt2);
+        margin-top: 0.4rem;
+        letter-spacing: 0.02em;
+      }
+      .side-tagline {
+        font-size: 0.82rem;
+        color: var(--txt3);
+        line-height: 1.6;
+        margin-top: 0.8rem;
+        max-width: 220px;
+      }
+
+      .side-nav {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        margin-top: 1rem;
+      }
+      .side-nav a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        text-decoration: none;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        font-weight: 400;
+        color: var(--txt3);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        transition: color 0.2s;
+        position: relative;
+      }
+      .side-nav a .nav-line {
+        width: 24px;
+        height: 1px;
+        background: var(--txt3);
+        transition:
+          width 0.3s,
+          background 0.2s;
+        flex-shrink: 0;
+      }
+      .side-nav a:hover,
+      .side-nav a.active {
+        color: var(--txt);
+      }
+      .side-nav a:hover .nav-line,
+      .side-nav a.active .nav-line {
+        width: 48px;
+        background: var(--cyan);
+        box-shadow: 0 0 8px var(--cyan);
+      }
+      .side-nav a.active {
+        color: var(--cyan);
+      }
+
+      .side-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--green);
+        letter-spacing: 0.06em;
+        background: rgba(16, 185, 129, 0.08);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 100px;
+        padding: 0.35rem 0.85rem;
+        width: fit-content;
+      }
+      .pip {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pip 2.5s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes pip {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.35;
+        }
+      }
+
+      .side-socials {
+        display: flex;
+        gap: 1rem;
+        margin-top: auto;
+      }
+      .side-socials a {
+        color: var(--txt3);
+        text-decoration: none;
+        transition:
+          color 0.2s,
+          transform 0.15s;
+        display: flex;
+      }
+      .side-socials a:hover {
+        color: var(--cyan);
+        transform: translateY(-2px);
+      }
+      .side-socials svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      main {
+        padding: 4rem 5rem 6rem 5rem;
+        position: relative;
+      }
+
+      #hero {
+        padding-top: 2rem;
+      }
+
+      .terminal-window {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 3rem;
+        box-shadow:
+          0 0 40px rgba(0, 212, 255, 0.04),
+          0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+      .terminal-bar {
+        background: var(--bg4);
+        padding: 0.65rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-bottom: 1px solid var(--border2);
+      }
+      .term-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .term-title {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--txt3);
+        margin-left: auto;
+        letter-spacing: 0.06em;
+      }
+      .terminal-body {
+        padding: 1.2rem 1.5rem;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        line-height: 1.8;
+        color: var(--txt2);
+        min-height: 120px;
+      }
+      .term-line {
+        display: block;
+      }
+      .term-prompt {
+        color: var(--cyan);
+      }
+      .term-cmd {
+        color: var(--txt);
+      }
+      .term-out {
+        color: var(--txt2);
+      }
+      .term-out.hi {
+        color: var(--cyan);
+      }
+      .term-out.vi {
+        color: var(--violet2);
+      }
+      .term-out.gr {
+        color: var(--green);
+      }
+      .term-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 1em;
+        background: var(--cyan);
+        vertical-align: text-bottom;
+        margin-left: 2px;
+        animation: blink 1s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ── TYPEWRITER "I build ___" ── */
+      .hero-tw {
+        font-size: clamp(1rem, 2.5vw, 1.35rem);
+        color: var(--txt2);
+        margin-bottom: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .tw-role {
+        color: var(--cyan);
+        font-family: var(--mono);
+        font-weight: 500;
+      }
+      .tw-cur {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: var(--cyan);
+        animation: blink 1s step-end infinite;
+        vertical-align: middle;
+        margin-left: 1px;
+      }
+
+      .hero-h {
+        font-family: var(--grotesk);
+        font-size: clamp(3rem, 7vw, 6rem);
+        font-weight: 700;
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+        margin-bottom: 1.5rem;
+      }
+      .hero-h .line1 {
+        display: block;
+        color: var(--txt);
+      }
+      .hero-h .line2 {
+        display: block;
+        background: linear-gradient(
+          135deg,
+          var(--cyan) 0%,
+          var(--violet2) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-desc {
+        font-size: 1rem;
+        color: var(--txt2);
+        line-height: 1.8;
+        max-width: 540px;
+        margin-bottom: 2rem;
+      }
+      .hero-desc strong {
+        color: var(--txt);
+        font-weight: 500;
+      }
+
+      .hero-btns {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.75rem 1.8rem;
+        background: var(--cyan);
+        color: var(--bg);
+        border: none;
+        border-radius: 8px;
+        font-family: var(--grotesk);
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          transform 0.15s;
+      }
+      .btn-primary:hover {
+        background: #33dcff;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        transform: translateY(-2px);
+      }
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.75rem 1.8rem;
+        background: transparent;
+        color: var(--txt2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-family: var(--grotesk);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s,
+          background 0.2s,
+          transform 0.15s;
+      }
+      .btn-ghost:hover {
+        border-color: var(--cyan);
+        color: var(--cyan);
+        background: var(--cyan4);
+        transform: translateY(-2px);
+      }
+
+      .section {
+        padding: 5rem 0;
+        border-top: 1px solid var(--border2);
+      }
+
+      .eyebrow {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--cyan);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--cyan);
+        box-shadow: 0 0 6px var(--cyan);
+      }
+
+      .sec-title {
+        font-family: var(--grotesk);
+        font-size: clamp(1.8rem, 3.5vw, 3rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.5rem;
+      }
+      .sec-title .hl {
+        background: linear-gradient(
+          135deg,
+          var(--cyan) 0%,
+          var(--violet2) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .sec-sub {
+        font-size: 0.9rem;
+        color: var(--txt3);
+        margin-bottom: 3rem;
+      }
+
+      .rv {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .rv.in {
+        opacity: 1;
+        transform: none;
+      }
+      .rv-l {
+        opacity: 0;
+        transform: translateX(-24px);
+        transition:
+          opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .rv-l.in {
+        opacity: 1;
+        transform: none;
+      }
+      .rv-r {
+        opacity: 0;
+        transform: translateX(24px);
+        transition:
+          opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+          transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .rv-r.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4rem;
+        align-items: start;
+      }
+      .about-text p {
+        font-size: 0.95rem;
+        color: var(--txt2);
+        line-height: 1.9;
+        margin-bottom: 1rem;
+      }
+      .about-text p strong {
+        color: var(--txt);
+        font-weight: 500;
+      }
+
+      .pull-quote {
+        border-left: 2px solid var(--cyan);
+        padding-left: 1.25rem;
+        margin: 1.5rem 0;
+        font-family: var(--grotesk);
+        font-size: 1.05rem;
+        font-weight: 400;
+        color: var(--txt);
+        line-height: 1.6;
+        box-shadow: -4px 0 20px rgba(0, 212, 255, 0.1);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1px;
+        margin-top: 2rem;
+      }
+      .stat-card {
+        background: rgba(0, 212, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border2);
+        padding: 1.25rem;
+        text-align: center;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+        cursor: default;
+      }
+      .stat-card:first-child {
+        border-radius: 12px 0 0 0;
+      }
+      .stat-card:nth-child(2) {
+        border-radius: 0 12px 0 0;
+      }
+      .stat-card:nth-child(3) {
+        border-radius: 0 0 0 12px;
+      }
+      .stat-card:last-child {
+        border-radius: 0 0 12px 0;
+      }
+      .stat-card:hover {
+        background: var(--cyan4);
+        border-color: var(--border);
+      }
+      .stat-n {
+        font-family: var(--grotesk);
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--cyan);
+        display: block;
+        line-height: 1;
+        margin-bottom: 0.3rem;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      }
+      .stat-l {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--txt3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .info-card {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        width: 260px;
+        position: sticky;
+        top: 2rem;
+        flex-shrink: 0;
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.05);
+      }
+      .ic-head {
+        padding: 1.2rem;
+        background: var(--bg4);
+        border-bottom: 1px solid var(--border2);
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .ic-av {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--cyan), var(--violet));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--grotesk);
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .ic-name {
+        font-weight: 600;
+        font-size: 0.88rem;
+        color: var(--txt);
+      }
+      .ic-role {
+        font-size: 0.72rem;
+        color: var(--cyan);
+        margin-top: 0.1rem;
+        font-family: var(--mono);
+      }
+      .ic-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.7rem 1.2rem;
+        border-bottom: 1px solid var(--border2);
+        transition: background 0.15s;
+      }
+      .ic-row:last-child {
+        border-bottom: none;
+      }
+      .ic-row:hover {
+        background: var(--cyan5);
+      }
+      .ic-key {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--txt3);
+        min-width: 60px;
+        letter-spacing: 0.04em;
+        padding-top: 0.05rem;
+      }
+      .ic-val {
+        font-size: 0.78rem;
+        color: var(--txt2);
+        line-height: 1.4;
+      }
+      .ic-val a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+      .ic-status {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: var(--green);
+      }
+
+      .skills-layout {
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        gap: 3rem;
+        align-items: start;
+      }
+      .skill-item {
+        margin-bottom: 1.4rem;
+      }
+      .sk-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+      .sk-name {
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--txt);
+      }
+      .sk-pct {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--cyan);
+      }
+      .sk-track {
+        height: 2px;
+        background: var(--bg5);
+        border-radius: 100px;
+        position: relative;
+        overflow: visible;
+      }
+      .sk-fill {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        background: linear-gradient(90deg, var(--cyan), var(--violet2));
+        border-radius: 100px;
+        width: 0;
+        transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+      }
+      .sk-fill::after {
+        content: "";
+        position: absolute;
+        right: -1px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: white;
+        box-shadow:
+          0 0 10px var(--cyan),
+          0 0 20px var(--cyan);
+      }
+
+      .tags-cloud {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .skill-tag {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        padding: 0.25rem 0.65rem;
+        background: var(--cyan4);
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        color: var(--cyan);
+        letter-spacing: 0.04em;
+        transition:
+          background 0.2s,
+          transform 0.15s;
+        cursor: default;
+      }
+      .skill-tag:hover {
+        background: var(--cyan3);
+        transform: scale(1.04);
+      }
+      .skill-tag.violet {
+        background: var(--violet3);
+        border-color: rgba(124, 58, 237, 0.3);
+        color: var(--violet2);
+      }
+      .skill-tag.violet:hover {
+        background: rgba(124, 58, 237, 0.25);
+      }
+
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: auto;
+        gap: 1rem;
+      }
+
+      .p-card {
+        background: var(--bg3);
+        border: 1px solid var(--border3);
+        border-radius: 16px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+        transition:
+          border-color 0.3s,
+          transform 0.25s,
+          box-shadow 0.3s;
+      }
+      .p-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at var(--mx, 50%) var(--my, 50%),
+          rgba(0, 212, 255, 0.06) 0%,
+          transparent 55%
+        );
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        border-radius: 16px;
+      }
+      .p-card:hover {
+        border-color: var(--border);
+        transform: translateY(-4px);
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          0 0 30px rgba(0, 212, 255, 0.06);
+      }
+      .p-card:hover::before {
+        opacity: 1;
+      }
+
+      .p-card.feat {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .p-card.wide {
+        grid-column: span 1;
+      }
+
+      .p-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .p-num {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--txt3);
+        letter-spacing: 0.1em;
+      }
+      .p-badge {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        padding: 0.2rem 0.6rem;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-radius: 100px;
+        color: var(--green);
+      }
+      .p-badge.award {
+        background: rgba(0, 212, 255, 0.1);
+        border-color: var(--border);
+        color: var(--cyan);
+      }
+      .p-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        flex-shrink: 0;
+      }
+      .p-icon.cyan-bg {
+        background: var(--cyan4);
+        border: 1px solid var(--border);
+      }
+      .p-icon.violet-bg {
+        background: var(--violet3);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+      }
+      .p-icon.green-bg {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+
+      .p-title {
+        font-family: var(--grotesk);
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--txt);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+      }
+      .p-title.lg {
+        font-size: 1.5rem;
+      }
+      .p-collab {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        color: var(--txt3);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .p-desc {
+        font-size: 0.85rem;
+        color: var(--txt2);
+        line-height: 1.75;
+        flex: 1;
+      }
+      .p-desc strong {
+        color: var(--txt);
+        font-weight: 500;
+      }
+      .p-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .p-tag {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        padding: 0.2rem 0.55rem;
+        background: var(--bg4);
+        border: 1px solid var(--border3);
+        border-radius: 6px;
+        color: var(--txt3);
+      }
+      .p-links {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+      }
+      .p-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.35rem 0.8rem;
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.15s;
+      }
+      .p-link.gh {
+        color: var(--txt3);
+        border: 1px solid var(--border3);
+      }
+      .p-link.gh:hover {
+        color: var(--txt);
+        border-color: rgba(148, 163, 184, 0.2);
+      }
+      .p-link.live {
+        color: var(--cyan);
+        border: 1px solid var(--border);
+      }
+      .p-link.live:hover {
+        background: var(--cyan4);
+      }
+      .p-link svg {
+        width: 10px;
+        height: 10px;
+      }
+
+      .timeline {
+        position: relative;
+        padding-left: 2rem;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        bottom: 8px;
+        width: 1px;
+        background: linear-gradient(
+          180deg,
+          var(--cyan),
+          var(--violet),
+          transparent
+        );
+        opacity: 0.3;
+      }
+      .tl-item {
+        position: relative;
+        padding: 1.5rem 1.5rem 1.5rem;
+        margin-bottom: 1rem;
+        background: var(--bg3);
+        border: 1px solid var(--border3);
+        border-radius: 16px;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .tl-item:hover {
+        border-color: var(--border);
+        background: var(--bg4);
+      }
+      .tl-item::before {
+        content: "";
+        position: absolute;
+        left: -2rem;
+        top: 1.75rem;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--bg3);
+        border: 1.5px solid var(--txt3);
+        transform: translateX(-4px);
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .tl-item.active::before {
+        border-color: var(--cyan);
+        background: var(--cyan);
+        box-shadow:
+          0 0 10px var(--cyan),
+          0 0 20px rgba(0, 212, 255, 0.4);
+      }
+      .tl-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.4rem;
+        flex-wrap: wrap;
+      }
+      .tl-type {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: 100px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .tl-type.lead {
+        background: var(--cyan4);
+        border: 1px solid var(--border);
+        color: var(--cyan);
+      }
+      .tl-type.ach {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        color: var(--green);
+      }
+      .tl-type.edu {
+        background: var(--violet3);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        color: var(--violet2);
+      }
+      .tl-type.work {
+        background: var(--bg4);
+        border: 1px solid var(--border3);
+        color: var(--txt3);
+      }
+      .tl-year {
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        color: var(--txt3);
+      }
+      .tl-role {
+        font-family: var(--grotesk);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--txt);
+        margin-bottom: 0.15rem;
+      }
+      .tl-org {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--txt3);
+        margin-bottom: 0.6rem;
+      }
+      .tl-desc {
+        font-size: 0.84rem;
+        color: var(--txt2);
+        line-height: 1.7;
+      }
+
+      .cv-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+      }
+      .cv-window {
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow:
+          0 40px 80px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(0, 212, 255, 0.04);
+      }
+      .cv-winbar {
+        background: var(--bg4);
+        padding: 0.7rem 1.1rem;
+        border-bottom: 1px solid var(--border2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .cv-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .cv-winname {
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        color: var(--txt3);
+        margin-left: auto;
+      }
+      .cv-inner {
+        padding: 1.75rem;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        line-height: 1.8;
+      }
+      .cv-name {
+        font-family: var(--grotesk);
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--txt);
+        margin-bottom: 0.15rem;
+        letter-spacing: -0.02em;
+      }
+      .cv-contact {
+        color: var(--txt3);
+        font-size: 0.68rem;
+        margin-bottom: 1.5rem;
+      }
+      .cv-sec {
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--cyan);
+        border-bottom: 1px solid var(--border2);
+        padding-bottom: 0.2rem;
+        margin: 1rem 0 0.6rem;
+      }
+      .cv-entry {
+        margin-bottom: 0.55rem;
+        color: var(--txt2);
+      }
+      .cv-entry strong {
+        color: var(--txt);
+      }
+      .cv-badge {
+        display: inline-block;
+        font-size: 0.6rem;
+        padding: 0.05rem 0.4rem;
+        background: var(--cyan4);
+        border-radius: 4px;
+        color: var(--cyan);
+        margin-left: 0.35rem;
+      }
+
+      .cv-side {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding-top: 0.5rem;
+      }
+      .cv-side-h {
+        font-family: var(--grotesk);
+        font-size: clamp(1.8rem, 3vw, 2.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+      }
+      .cv-side-h .hl {
+        background: linear-gradient(135deg, var(--cyan), var(--violet2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .cv-side-p {
+        font-size: 0.88rem;
+        color: var(--txt2);
+        line-height: 1.8;
+        max-width: 340px;
+      }
+      .cv-dl-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 1rem 2rem;
+        background: var(--cyan);
+        color: var(--bg);
+        border: none;
+        border-radius: 10px;
+        font-family: var(--grotesk);
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        width: fit-content;
+        transition:
+          background 0.2s,
+          box-shadow 0.2s,
+          transform 0.15s;
+      }
+      .cv-dl-btn:hover {
+        background: #33dcff;
+        box-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+        transform: translateY(-3px);
+      }
+      .cv-dl-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .cv-hint {
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        color: var(--txt3);
+        letter-spacing: 0.08em;
+      }
+
+      .contact-wrap {
+        text-align: center;
+      }
+      .contact-big {
+        font-family: var(--grotesk);
+        font-size: clamp(2rem, 5vw, 4.5rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin-bottom: 1rem;
+      }
+      .contact-big .hl {
+        background: linear-gradient(
+          135deg,
+          var(--cyan) 0%,
+          var(--violet2) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .contact-sub {
+        font-size: 0.9rem;
+        color: var(--txt2);
+        line-height: 1.8;
+        max-width: 420px;
+        margin: 0 auto 2.5rem;
+      }
+      .soc-row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      .soc-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.4rem;
+        background: var(--bg3);
+        border: 1px solid var(--border3);
+        border-radius: 10px;
+        color: var(--txt2);
+        text-decoration: none;
+        font-family: var(--mono);
+        font-size: 0.73rem;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          color 0.2s,
+          transform 0.15s;
+      }
+      .soc-btn:hover {
+        border-color: var(--border);
+        color: var(--cyan);
+        background: var(--cyan4);
+        transform: translateY(-2px);
+      }
+      .soc-btn svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid var(--border2);
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        color: var(--txt3);
+        letter-spacing: 0.06em;
+      }
+      footer a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+
+      .mob-nav {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 800;
+        background: rgba(5, 8, 18, 0.97);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      .mob-nav.open {
+        display: flex;
+      }
+      .mob-nav a {
+        font-family: var(--grotesk);
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--txt);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .mob-nav a:hover {
+        color: var(--cyan);
+      }
+      .mob-close {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.75rem;
+        font-size: 1.5rem;
+        color: var(--txt3);
+        cursor: pointer;
+      }
+      .mob-ham {
+        display: none;
+        position: fixed;
+        top: 1.25rem;
+        right: 1.5rem;
+        z-index: 700;
+        font-size: 1.4rem;
+        color: var(--txt2);
+        cursor: pointer;
+        background: var(--bg3);
+        border: 1px solid var(--border3);
+        border-radius: 8px;
+        padding: 0.4rem 0.6rem;
+        line-height: 1;
+      }
+
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        aside {
+          position: fixed;
+          left: -320px;
+          top: 0;
+          bottom: 0;
+          z-index: 700;
+          width: 300px;
+          background: rgba(5, 8, 18, 0.97);
+          backdrop-filter: blur(20px);
+          transition: left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+          border-right: 1px solid var(--border);
+          padding-top: 5rem;
+        }
+        aside.open {
+          left: 0;
+        }
+        main {
+          padding: 2rem 1.5rem 4rem;
+        }
+        .mob-ham {
+          display: block;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+        .info-card {
+          width: 100%;
+          position: static;
+        }
+        .bento-grid {
+          grid-template-columns: 1fr;
+        }
+        .p-card.feat {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+        .skills-layout {
+          grid-template-columns: 1fr;
+        }
+        .cv-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .hero-h {
+          font-size: clamp(2.5rem, 12vw, 3.5rem);
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      #radar-canvas {
+        max-width: 260px;
+        width: 100%;
+        display: block;
+        margin: 0 auto;
+      }
+      .radar-label {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        color: var(--txt3);
+        text-align: center;
+        margin-top: 0.5rem;
+        letter-spacing: 0.08em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="c-dot"></div>
+    <div id="c-ring"></div>
+    <div id="prog"></div>
+
+    <canvas id="neural-canvas"></canvas>
+
+    <div class="mob-nav" id="mob-nav">
+      <div class="mob-close" id="mob-close">✕</div>
+      <a href="#hero" onclick="closeMob()">Home</a>
+      <a href="#about" onclick="closeMob()">About</a>
+      <a href="#skills" onclick="closeMob()">Skills</a>
+      <a href="#projects" onclick="closeMob()">Projects</a>
+      <a href="#experience" onclick="closeMob()">Experience</a>
+      <a href="#cv" onclick="closeMob()">CV</a>
+      <a href="#contact" onclick="closeMob()">Contact</a>
+    </div>
+    <div class="mob-ham" id="mob-ham">☰</div>
+
+    <div class="layout">
+      <aside id="sidebar">
+        <div>
+          <div class="side-name">Wel<span class="last">come!</span></div>
+          <div class="side-role">I am an Aspiring AI Engineer</div>
+          <p class="side-tagline">
+            BSc Applied Data Science & Communication · KDU Sri Lanka
+          </p>
+        </div>
+
+        <div class="side-status">
+          <div class="pip"></div>
+          Open to Work
+        </div>
+
+        <nav>
+          <ul class="side-nav" id="side-nav">
+            <li>
+              <a href="#about" class="nav-link" data-sec="about">
+                <span class="nav-line"></span> About
+              </a>
+            </li>
+            <li>
+              <a href="#skills" class="nav-link" data-sec="skills">
+                <span class="nav-line"></span> Skills
+              </a>
+            </li>
+            <li>
+              <a href="#projects" class="nav-link" data-sec="projects">
+                <span class="nav-line"></span> Projects
+              </a>
+            </li>
+            <li>
+              <a href="#experience" class="nav-link" data-sec="experience">
+                <span class="nav-line"></span> Experience
+              </a>
+            </li>
+            <li>
+              <a href="#cv" class="nav-link" data-sec="cv">
+                <span class="nav-line"></span> CV
+              </a>
+            </li>
+            <li>
+              <a href="#contact" class="nav-link" data-sec="contact">
+                <span class="nav-line"></span> Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="side-socials">
+          <a
+            href="https://github.com/DilaknaH"
+            target="_blank"
+            rel="noopener"
+            title="GitHub"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/dilakna-godagamage-53166326b/"
+            target="_blank"
+            rel="noopener"
+            title="LinkedIn"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+              />
+              <rect x="2" y="9" width="4" height="12" />
+              <circle cx="4" cy="4" r="2" />
+            </svg>
+          </a>
+          <a href="mailto:dilaknagodagamage@gmail.com" title="Email">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+              />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+          </a>
+          <a href="tel:+94779567343" title="Phone">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13.09 19.79 19.79 0 0 1 1.07 4.38 2 2 0 0 1 3.03 2.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"
+              />
+            </svg>
+          </a>
+        </div>
+      </aside>
+
+      <main>
+        <!-- HERO -->
+        <section id="hero">
+          <h1 class="hero-h rv">
+            <span class="line1">Dilakna</span>
+            <span class="line2">Godagamage</span>
+          </h1>
+
+          <div class="hero-tw rv">
+            <span style="color: var(--txt2)">I build</span>
+            <span class="tw-role" id="tw"></span><span class="tw-cur"></span>
+          </div>
+
+          <p class="hero-desc rv">
+            Undergraduate in
+            <strong>Applied Data Science & Communication</strong> at KDU. I
+            craft systems that bridge cutting edge AI research with real human
+            needs from inclusive education to climate tech.
+          </p>
+
+          <div class="hero-btns rv">
+            <a class="btn-primary" href="#projects">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="5 12 12 5 19 12" />
+                <polyline points="12 5 12 19" />
+              </svg>
+              View Projects
+            </a>
+            <a class="btn-ghost" href="#contact">Get in Touch</a>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="section">
+          <p class="eyebrow rv">About</p>
+          <h2 class="sec-title rv">Who I <span class="hl">Am</span></h2>
+          <p class="sec-sub rv">The person behind the projects</p>
+
+          <div class="about-grid">
+            <div class="rv-l">
+              <div class="about-text">
+                <p>
+                  I'm <strong>Dilakna Godagamage</strong>, an aspiring AI
+                  engineer pursuing a BSc in
+                  <strong>Applied Data Science & Communication</strong> at
+                  General Sir John Kotelawala Defence University, Rathmalana.
+                </p>
+                <blockquote class="pull-quote">
+                  "Passion sits at the frontier of artificial intelligence and
+                  human-centred design."
+                </blockquote>
+                <p>
+                  From AI-powered Sinhala education tools to predictive wellness
+                  platforms, I love solving problems that matter. I don't just
+                  build things that work. I build things that
+                  <strong>genuinely help people</strong>.
+                </p>
+                <p>
+                  Beyond engineering, I contribute as
+                  <strong>Membership Director</strong> of KDU's AI & Data
+                  Science Club and as part of the
+                  <strong>IEEE Student Branch</strong> at KDU.
+                </p>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-card rv">
+                  <span class="stat-n">4+</span>
+                  <div class="stat-l">AI Projects</div>
+                </div>
+                <div class="stat-card rv">
+                  <span class="stat-n">02</span>
+                  <div class="stat-l">Leadership Roles</div>
+                </div>
+                <div class="stat-card rv">
+                  <span class="stat-n">🏆</span>
+                  <div class="stat-l">Data Odyssey 2025</div>
+                </div>
+                <div class="stat-card rv">
+                  <span class="stat-n">∞</span>
+                  <div class="stat-l">Curiosity Level</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rv-r">
+              <div class="info-card">
+                <div class="ic-head">
+                  <div class="ic-av">DG</div>
+                  <div>
+                    <div class="ic-name">Dilakna Godagamage</div>
+                    <div class="ic-role">Aspiring AI Engineer</div>
+                  </div>
+                </div>
+                <div class="ic-body">
+                  <div class="ic-row">
+                    <span class="ic-key">Degree</span>
+                    <span class="ic-val">BSc Applied Data Science</span>
+                  </div>
+                  <div class="ic-row">
+                    <span class="ic-key">Uni</span>
+                    <span class="ic-val">KDU, Rathmalana</span>
+                  </div>
+                  <div class="ic-row">
+                    <span class="ic-key">Location</span>
+                    <span class="ic-val">Colombo, Sri Lanka</span>
+                  </div>
+                  <div class="ic-row">
+                    <span class="ic-key">Email</span>
+                    <span class="ic-val">
+                      <a href="mailto:dilaknagodagamage@gmail.com"
+                        >dilaknagodagamage@gmail.com</a
+                      >
+                    </span>
+                  </div>
+                  <div class="ic-row">
+                    <span class="ic-key">Status</span>
+                    <span class="ic-val">
+                      <span class="ic-status"
+                        ><span class="pip"></span>Open to Work</span
+                      >
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="section">
+          <p class="eyebrow rv">Capabilities</p>
+          <h2 class="sec-title rv">
+            Skills & <span class="hl">Technologies</span>
+          </h2>
+          <p class="sec-sub rv">What I bring to the table</p>
+
+          <div class="skills-layout">
+            <div class="rv-l">
+              <div id="skill-list"></div>
+              <div style="margin-top: 2rem">
+                <p
+                  style="
+                    font-family: var(--mono);
+                    font-size: 0.68rem;
+                    color: var(--txt3);
+                    letter-spacing: 0.1em;
+                    text-transform: uppercase;
+                    margin-bottom: 0.75rem;
+                  "
+                >
+                  Tech Stack
+                </p>
+                <div class="tags-cloud" id="tags-cloud"></div>
+              </div>
+            </div>
+            <div class="rv-r">
+              <canvas id="radar-canvas" width="260" height="260"></canvas>
+              <p class="radar-label">capability radar · self-assessed</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="section">
+          <p class="eyebrow rv">Work</p>
+          <h2 class="sec-title rv">What I've <span class="hl">Built</span></h2>
+          <p class="sec-sub rv">Real problems. Real solutions.</p>
+
+          <div class="bento-grid">
+            <div class="p-card rv" data-tilt>
+              <div class="p-top">
+                <span class="p-num">01 </span>
+                <span class="p-badge award"
+                  >🏆 2nd Place · Data Odyssey 2025</span
+                >
+              </div>
+              <h3 class="p-title lg">Akuru Mithura</h3>
+              <p class="p-collab">
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                </svg>
+                Collaborative Group Project
+              </p>
+              <p class="p-desc">
+                AI-assisted Sinhala learning platform designed for
+                <strong>children with dysgraphia</strong> guiding them through
+                letter tracing and literacy activities with intelligent
+                real-time feedback. Built collaboratively to support inclusive
+                education for students who struggle with handwriting.
+              </p>
+              <div class="p-tags">
+                <span class="p-tag">AI in Education</span>
+                <span class="p-tag">Dysgraphia Support</span>
+                <span class="p-tag">EdTech</span>
+                <span class="p-tag">Inclusive Design</span>
+              </div>
+              <div class="p-links">
+                <a
+                  class="p-link gh"
+                  href="https://github.com/samodad/kdu-research"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    />
+                  </svg>
+                  GitHub
+                </a>
+                <a
+                  class="p-link live"
+                  href="https://samodad.github.io/kdu-research/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Demo
+                </a>
+              </div>
+            </div>
+
+            <div class="p-card rv" data-tilt>
+              <div class="p-top"><span class="p-num">02</span></div>
+              <h3 class="p-title">ML Auditor</h3>
+              <p class="p-desc">
+                Automated ML code quality and risk analysis tool that scans
+                projects to detect data leakage, poor evaluation practices, and
+                reproducibility gaps using rule-based checks and AI-assisted
+                explanations.
+              </p>
+              <div class="p-tags">
+                <span class="p-tag">ML Engineering</span>
+                <span class="p-tag">Responsible AI</span>
+                <span class="p-tag">Code Analysis</span>
+              </div>
+              <div class="p-links">
+                <a
+                  class="p-link gh"
+                  href="https://github.com/DilaknaH/ml-auditor"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    />
+                  </svg>
+                  GitHub
+                </a>
+                <a
+                  class="p-link live"
+                  href="https://ml-auditor-pro.streamlit.app/"
+                  target="_blank"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Demo
+                </a>
+              </div>
+            </div>
+
+            <div class="p-card rv" data-tilt>
+              <div class="p-top"><span class="p-num">03</span></div>
+              <h3 class="p-title">Wellness AI</h3>
+              <p class="p-desc">
+                Predictive academic and mental health system integrating
+                performance tracking with wellness analysis. Detects burnout
+                risk early from study habits, sleep patterns, and stress
+                indicators.
+              </p>
+              <div class="p-tags">
+                <span class="p-tag">Predictive Modelling</span>
+                <span class="p-tag">Mental Health Tech</span>
+                <span class="p-tag">Human-Centred AI</span>
+              </div>
+              <div class="p-links">
+                <a
+                  class="p-link gh"
+                  href="https://github.com/DilaknaH/ai-student-wellness-assistant"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    />
+                  </svg>
+                  GitHub
+                </a>
+                <a
+                  class="p-link live"
+                  href="https://ai-student-wellness-assistant.streamlit.app/"
+                  target="_blank"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Demo
+                </a>
+              </div>
+            </div>
+
+            <div class="p-card rv" data-tilt>
+              <div class="p-top"><span class="p-num">04</span></div>
+              <h3 class="p-title">HerAnalytics Eco</h3>
+              <p class="p-desc">
+                Sustainability-focused AI agent built for Innovate With
+                Ballerina 2025 Competition. Calculates carbon footprints and
+                delivers personalised eco-strategies using scalable, API-driven
+                Ballerina architecture.
+              </p>
+              <div class="p-tags">
+                <span class="p-tag">AI Agent</span>
+                <span class="p-tag">Climate Tech</span>
+                <span class="p-tag">Ballerina</span>
+              </div>
+              <div class="p-links">
+                <a
+                  class="p-link gh"
+                  href="https://github.com/DilaknaH/iwb25-430-heranalytics"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                    />
+                  </svg>
+                  GitHub
+                </a>
+                <a class="p-link live" href="#" target="_blank">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                  Demo
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="section">
+          <p class="eyebrow rv">Journey</p>
+          <h2 class="sec-title rv">
+            Experience & <span class="hl">Leadership</span>
+          </h2>
+          <p class="sec-sub rv">The path so far</p>
+
+          <div class="timeline rv">
+            <div class="tl-item active">
+              <div class="tl-meta">
+                <span class="tl-type lead">Leadership</span>
+                <span class="tl-year">2025 — Present</span>
+              </div>
+              <div class="tl-role">Membership Director</div>
+              <div class="tl-org">AI & Data Science Club of KDU</div>
+              <p class="tl-desc">
+                Managing and growing an active community of students passionate
+                about AI, ML and data science. Organising workshops and
+                fostering peer-learning initiatives.
+              </p>
+            </div>
+
+            <div class="tl-item active">
+              <div class="tl-meta">
+                <span class="tl-type lead">Leadership</span>
+                <span class="tl-year">2025 — 2026</span>
+              </div>
+              <div class="tl-role">Secretary Team</div>
+              <div class="tl-org">IEEE Student Branch · KDU</div>
+              <p class="tl-desc">
+                Coordinating events, communications, and administrative
+                operations, connecting students with global engineering and
+                technology networks.
+              </p>
+            </div>
+
+            <div class="tl-item">
+              <div class="tl-meta">
+                <span class="tl-type work">Internship</span>
+                <span class="tl-year">Jul 2023 – Jan 2024</span>
+              </div>
+              <div class="tl-role">Intern — Office Assistant</div>
+              <div class="tl-org">Sri Lanka Insurance Corporation</div>
+              <p class="tl-desc">
+                Managed documentation, data entry, scheduling and customer
+                correspondence. Built strong foundations in professional
+                workplace communication.
+              </p>
+            </div>
+
+            <div class="tl-item active">
+              <div class="tl-meta">
+                <span class="tl-type edu">Education</span>
+                <span class="tl-year">2023 — Present</span>
+              </div>
+              <div class="tl-role">BSc Applied Data Science</div>
+              <div class="tl-org">
+                General Sir John Kotelawala Defence University
+              </div>
+              <p class="tl-desc">
+                BSc Applied Data Science & Communication ,undergraduate degree
+                focused on data science, machine learning, AI and communication
+                technologies. Currently ongoing. Rathmalana campus.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- CV -->
+        <section id="cv" class="section">
+          <p class="eyebrow rv">Resume</p>
+          <h2 class="sec-title rv">My <span class="hl">CV</span></h2>
+          <p class="sec-sub rv">The complete picture</p>
+
+          <div class="cv-layout">
+            <div class="cv-window rv-l">
+              <div class="cv-winbar">
+                <div class="cv-dot" style="background: #ff5f56"></div>
+                <div class="cv-dot" style="background: #ffbe2e"></div>
+                <div class="cv-dot" style="background: #27c93f"></div>
+                <span class="cv-winname">Dilakna_Godagamage_CV.pdf</span>
+              </div>
+              <div class="cv-inner">
+                <div class="cv-name">Dilakna Godagamage</div>
+                <div class="cv-contact">
+                  dilaknagodagamage@gmail.com · +94 77 956 7343 · Colombo, Sri
+                  Lanka
+                </div>
+                <div class="cv-sec">Education</div>
+                <div class="cv-entry">
+                  <strong>BSc Applied Data Science & Communication</strong
+                  ><br />
+                  General Sir John Kotelawala Defence University · Currently
+                  Pursuing
+                </div>
+                <div class="cv-sec">Work Experience</div>
+                <div class="cv-entry">
+                  <strong>Intern – Office Assistant</strong> · Sri Lanka
+                  Insurance Corporation<br />
+                  Jul 2023 – Jan 2024
+                </div>
+                <div class="cv-sec">Projects</div>
+                <div class="cv-entry">
+                  <strong>Akuru Mithura</strong> — AI Sinhala Learning
+                  Platform<span class="cv-badge">🏆 2nd Place</span>
+                </div>
+                <div class="cv-entry">
+                  <strong>ML Auditor</strong> — ML Code Quality & Risk Analysis
+                  Tool
+                </div>
+                <div class="cv-entry">
+                  <strong>AI Student Wellness Assistant</strong> — Predictive
+                  Academic System
+                </div>
+                <div class="cv-entry">
+                  <strong>HerAnalytics</strong> — Eco AI Agent (Innovate With
+                  Ballerina 2025)
+                </div>
+                <div class="cv-sec">Leadership</div>
+                <div class="cv-entry">
+                  <strong>Membership Director</strong> · AI & Data Science Club
+                  of KDU · 2025–2026
+                </div>
+                <div class="cv-entry">
+                  <strong>Secretary Team</strong> · IEEE Student Branch at KDU ·
+                  2025–2026
+                </div>
+                <div class="cv-sec">Skills</div>
+                <div class="cv-entry">
+                  Python · Machine Learning · Data Analysis & Visualisation ·
+                  SQL · Ballerina · Research & Communication
+                </div>
+              </div>
+            </div>
+
+            <div class="cv-side rv-r">
+              <div class="cv-side-h">
+                Download My<br /><span class="hl">Full Resume</span>
+              </div>
+              <p class="cv-side-p">
+                Get the complete PDF version of my CV including all projects,
+                skills, education, and experience in a clean, professional
+                format ready to share.
+              </p>
+              <a
+                class="cv-dl-btn"
+                href="https://drive.google.com/file/d/1yyeXAU5aFtX5qoGWFM4dpPnVewayEJ29/view?usp=drive_link"
+                download="Dilakna_Godagamage_CV.pdf"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download PDF Resume
+              </a>
+              <div class="cv-hint">PDF · Updated 2025</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section">
+          <div class="contact-wrap">
+            <p class="eyebrow rv" style="justify-content: center">Contact</p>
+            <h2 class="contact-big rv">
+              Let's <span class="hl">Connect</span>
+            </h2>
+            <p class="contact-sub rv">
+              Whether it's a collaboration, internship, research idea, or just a
+              chat about AI... I'd love to hear from you.
+            </p>
+
+            <div class="soc-row rv">
+              <a class="soc-btn" href="mailto:dilaknagodagamage@gmail.com">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Email
+              </a>
+              <a
+                class="soc-btn"
+                href="https://www.linkedin.com/in/dilakna-godagamage-53166326b/"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"
+                  />
+                  <rect x="2" y="9" width="4" height="12" />
+                  <circle cx="4" cy="4" r="2" />
+                </svg>
+                LinkedIn
+              </a>
+              <a
+                class="soc-btn"
+                href="https://github.com/DilaknaH"
+                target="_blank"
+                rel="noopener"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                  />
+                </svg>
+                GitHub
+              </a>
+              <a class="soc-btn" href="tel:+94779567343">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13.09 19.79 19.79 0 0 1 1.07 4.38 2 2 0 0 1 3.03 2.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"
+                  />
+                </svg>
+                Phone
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      © 2025 Dilakna Godagamage · <a href="#">dilakna.dev</a> · Aspiring AI
+      Engineer
+    </footer>
+
+    <script>
+      /* 1. NEURAL NETWORK BACKGROUND */
+      const canvas = document.getElementById("neural-canvas");
+      const ctx2 = canvas.getContext("2d");
+      let W,
+        H,
+        particles = [];
+
+      function resizeCanvas() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const N = 80;
+      const MAX_DIST = 160;
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * W;
+          this.y = Math.random() * H;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.r = Math.random() * 1.5 + 0.5;
+          this.a = Math.random() * 0.6 + 0.2;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > W) this.vx *= -1;
+          if (this.y < 0 || this.y > H) this.vy *= -1;
+        }
+        draw() {
+          ctx2.beginPath();
+          ctx2.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx2.fillStyle = `rgba(0,212,255,${this.a})`;
+          ctx2.fill();
+        }
+      }
+
+      for (let i = 0; i < N; i++) particles.push(new Particle());
+
+      function drawNeural() {
+        ctx2.clearRect(0, 0, W, H);
+        for (let i = 0; i < N; i++) {
+          for (let j = i + 1; j < N; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+            if (d < MAX_DIST) {
+              const alpha = (1 - d / MAX_DIST) * 0.4;
+              ctx2.beginPath();
+              ctx2.moveTo(particles[i].x, particles[i].y);
+              ctx2.lineTo(particles[j].x, particles[j].y);
+              ctx2.strokeStyle =
+                (i + j) % 3 === 0
+                  ? `rgba(124,58,237,${alpha})`
+                  : `rgba(0,212,255,${alpha})`;
+              ctx2.lineWidth = 0.5;
+              ctx2.stroke();
+            }
+          }
+          particles[i].update();
+          particles[i].draw();
+        }
+        requestAnimationFrame(drawNeural);
+      }
+      drawNeural();
+
+      /* 2. CUSTOM CURSOR */
+      const dot = document.getElementById("c-dot");
+      const ring = document.getElementById("c-ring");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        dot.style.left = mx + "px";
+        dot.style.top = my + "px";
+      });
+      (function lerpRing() {
+        rx += (mx - rx) * 0.09;
+        ry += (my - ry) * 0.09;
+        ring.style.left = rx + "px";
+        ring.style.top = ry + "px";
+        requestAnimationFrame(lerpRing);
+      })();
+
+      document
+        .querySelectorAll("a, button, .p-card, .stat-card, .tl-item")
+        .forEach((el) => {
+          el.addEventListener("mouseenter", () => ring.classList.add("hov"));
+          el.addEventListener("mouseleave", () => ring.classList.remove("hov"));
+        });
+
+      /* 3. SCROLL PROGRESS BAR */
+      window.addEventListener(
+        "scroll",
+        () => {
+          const pct =
+            (window.scrollY /
+              (document.body.scrollHeight - window.innerHeight)) *
+            100;
+          document.getElementById("prog").style.width = pct + "%";
+        },
+        { passive: true },
+      );
+
+      /* 4. SIDEBAR ACTIVE SECTION TRACKING */
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav-link");
+
+      const secObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              navLinks.forEach((l) => l.classList.remove("active"));
+              const active = document.querySelector(
+                `.nav-link[data-sec="${entry.target.id}"]`,
+              );
+              if (active) active.classList.add("active");
+            }
+          });
+        },
+        { threshold: 0.2 },
+      );
+      sections.forEach((s) => secObserver.observe(s));
+
+      /* 5. SCROLL REVEAL */
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".rv, .rv-l, .rv-r")
+        .forEach((el) => io.observe(el));
+
+      /* 6. TERMINAL TYPEWRITER */
+      const LINES = [
+        { text: "$ whoami", cls: "term-prompt", delay: 60 },
+        {
+          text: "dilakna@kdu — aspiring-ai-engineer",
+          cls: "term-out hi",
+          delay: 18,
+        },
+        { text: "$ cat skills.txt", cls: "term-prompt", delay: 55 },
+        {
+          text: "Python · ML · Data Science · AI · SQL · Research",
+          cls: "term-out vi",
+          delay: 14,
+        },
+        { text: "$ echo $STATUS", cls: "term-prompt", delay: 55 },
+        {
+          text: "Open to work · Building the future ·",
+          cls: "term-out gr",
+          delay: 22,
+        },
+      ];
+
+      const termOut = document.getElementById("term-out");
+      let li = 0,
+        ci = 0,
+        currentSpan = null;
+      const termCursor = document.createElement("span");
+      termCursor.className = "term-cursor";
+
+      function typeLine() {
+        if (li >= LINES.length) {
+          termOut.appendChild(termCursor);
+          return;
+        }
+        const line = LINES[li];
+        if (ci === 0) {
+          currentSpan = document.createElement("span");
+          currentSpan.className = "term-line " + line.cls;
+          termOut.appendChild(currentSpan);
+        }
+        if (ci < line.text.length) {
+          currentSpan.textContent = line.text.slice(0, ci + 1);
+          ci++;
+          setTimeout(typeLine, line.delay);
+        } else {
+          ci = 0;
+          li++;
+          setTimeout(typeLine, 200);
+        }
+      }
+      setTimeout(typeLine, 600);
+
+      /* 7. TYPEWRITER — "I build ___" */
+      const twRoles = [
+        "AI Systems",
+        "ML Models",
+        "Intelligent Apps",
+        "Data Pipelines",
+        "AI Agents",
+      ];
+      let twRi = 0,
+        twCi = 0,
+        twDel = false;
+      const twEl = document.getElementById("tw");
+
+      function twTick() {
+        const w = twRoles[twRi];
+        if (!twDel) {
+          twEl.textContent = w.slice(0, ++twCi);
+          if (twCi === w.length) {
+            twDel = true;
+            setTimeout(twTick, 1800);
+            return;
+          }
+        } else {
+          twEl.textContent = w.slice(0, --twCi);
+          if (twCi === 0) {
+            twDel = false;
+            twRi = (twRi + 1) % twRoles.length;
+            setTimeout(twTick, 400);
+            return;
+          }
+        }
+        setTimeout(twTick, twDel ? 55 : 90);
+      }
+      twTick();
+
+      /* 8. SKILLS BARS + TAGS */
+      const SKILLS = [
+        { name: "Python", pct: 80 },
+        { name: "Machine Learning", pct: 70 },
+        { name: "Data Analysis & Visualisation", pct: 75 },
+        { name: "SQL", pct: 75 },
+        { name: "Communication & Research", pct: 70 },
+      ];
+      const TAGS_CYAN = [
+        "Python",
+        "TensorFlow",
+        "Scikit-learn",
+        "Pandas",
+        "NumPy",
+        "SQL",
+        "Jupyter",
+      ];
+      const TAGS_VIOLET = ["ML Ops", "Data Viz", "Research", "IEEE"];
+
+      const skillList = document.getElementById("skill-list");
+      SKILLS.forEach((s) => {
+        skillList.insertAdjacentHTML(
+          "beforeend",
+          `
+          <div class="skill-item">
+            <div class="sk-header">
+              <span class="sk-name">${s.name}</span>
+              <span class="sk-pct">${s.pct}%</span>
+            </div>
+            <div class="sk-track">
+              <div class="sk-fill" data-p="${s.pct}"></div>
+            </div>
+          </div>
+        `,
+        );
+      });
+
+      const tagsCloud = document.getElementById("tags-cloud");
+      TAGS_CYAN.forEach((t) =>
+        tagsCloud.insertAdjacentHTML(
+          "beforeend",
+          `<span class="skill-tag">${t}</span>`,
+        ),
+      );
+      TAGS_VIOLET.forEach((t) =>
+        tagsCloud.insertAdjacentHTML(
+          "beforeend",
+          `<span class="skill-tag violet">${t}</span>`,
+        ),
+      );
+
+      const barObs = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            document
+              .querySelectorAll(".sk-fill")
+              .forEach((b) => (b.style.width = b.dataset.p + "%"));
+            barObs.disconnect();
+          }
+        },
+        { threshold: 0.3 },
+      );
+      barObs.observe(skillList);
+
+      /* 9. RADAR CHART */
+      (function radarChart() {
+        const cv = document.getElementById("radar-canvas");
+        const ctx = cv.getContext("2d");
+        const CX = 130,
+          CY = 130,
+          R = 95;
+        const LABELS = [
+          "ML/AI",
+          "Python",
+          "Data Viz",
+          "SQL",
+          "Research",
+          "Ballerina",
+          "Comm.",
+        ];
+        const VALS = [0.82, 0.88, 0.85, 0.75, 0.78, 0.65, 0.9];
+        const NR = LABELS.length;
+        let p = 0;
+
+        const ang = (i) => -Math.PI / 2 + ((2 * Math.PI) / NR) * i;
+        const ease = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
+
+        function draw(prog) {
+          ctx.clearRect(0, 0, 260, 260);
+          for (let ring = 1; ring <= 4; ring++) {
+            ctx.beginPath();
+            for (let i = 0; i < NR; i++) {
+              const a = ang(i),
+                rv = (R * ring) / 4;
+              i === 0
+                ? ctx.moveTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv)
+                : ctx.lineTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv);
+            }
+            ctx.closePath();
+            ctx.strokeStyle = "rgba(0,212,255,0.1)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+          for (let i = 0; i < NR; i++) {
+            ctx.beginPath();
+            ctx.moveTo(CX, CY);
+            ctx.lineTo(CX + Math.cos(ang(i)) * R, CY + Math.sin(ang(i)) * R);
+            ctx.strokeStyle = "rgba(0,212,255,0.08)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+          const ep = ease(prog);
+          ctx.beginPath();
+          for (let i = 0; i < NR; i++) {
+            const a = ang(i),
+              rv = R * VALS[i] * ep;
+            i === 0
+              ? ctx.moveTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv)
+              : ctx.lineTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv);
+          }
+          ctx.closePath();
+          const grad = ctx.createLinearGradient(CX - R, CY - R, CX + R, CY + R);
+          grad.addColorStop(0, "rgba(0,212,255,0.12)");
+          grad.addColorStop(1, "rgba(124,58,237,0.12)");
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.strokeStyle = "rgba(0,212,255,0.6)";
+          ctx.lineWidth = 1.5;
+          ctx.shadowColor = "rgba(0,212,255,0.4)";
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          for (let i = 0; i < NR; i++) {
+            const a = ang(i),
+              rv = R * VALS[i] * ep;
+            ctx.beginPath();
+            ctx.arc(
+              CX + Math.cos(a) * rv,
+              CY + Math.sin(a) * rv,
+              3.5,
+              0,
+              Math.PI * 2,
+            );
+            ctx.fillStyle = "#00d4ff";
+            ctx.shadowColor = "#00d4ff";
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+          ctx.font = '400 10px "Space Mono", monospace';
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          for (let i = 0; i < NR; i++) {
+            const a = ang(i),
+              lv = R + 18;
+            ctx.fillStyle = "rgba(71,85,105,0.9)";
+            ctx.fillText(
+              LABELS[i],
+              CX + Math.cos(a) * lv,
+              CY + Math.sin(a) * lv,
+            );
+          }
+        }
+
+        const ro = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              ro.disconnect();
+              (function anim() {
+                p = Math.min(p + 0.022, 1);
+                draw(p);
+                if (p < 1) requestAnimationFrame(anim);
+              })();
+            }
+          },
+          { threshold: 0.3 },
+        );
+        ro.observe(cv);
+        draw(0);
+      })();
+
+      /* 10. 3D CARD TILT */
+      document.querySelectorAll("[data-tilt]").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const r = card.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+          const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+          card.style.transform = `perspective(900px) rotateX(${-dy * 5}deg) rotateY(${dx * 5}deg) translateY(-4px)`;
+          card.style.setProperty(
+            "--mx",
+            (((e.clientX - r.left) / r.width) * 100).toFixed(1) + "%",
+          );
+          card.style.setProperty(
+            "--my",
+            (((e.clientY - r.top) / r.height) * 100).toFixed(1) + "%",
+          );
+        });
+        card.addEventListener("mouseleave", () => {
+          card.style.transform = "";
+        });
+      });
+
+      /* 11. MOBILE SIDEBAR & MENU */
+      document.getElementById("mob-ham").onclick = () => {
+        document.getElementById("sidebar").classList.toggle("open");
+        document.getElementById("mob-nav").classList.toggle("open");
+      };
+      document.getElementById("mob-close").onclick = closeMob;
+      function closeMob() {
+        document.getElementById("mob-nav").classList.remove("open");
+        document.getElementById("sidebar").classList.remove("open");
+      }
+    </script>
+  </body>
+</html>
