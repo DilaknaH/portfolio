@@ -8,7 +8,7 @@
 
 ---
 
-## [Live Portfolio](https://portfolio-rho-vert-79.vercel.app)
+Click [here](https://portfolio-rho-vert-79.vercel.app) to the Live App.
 
 ---
 
