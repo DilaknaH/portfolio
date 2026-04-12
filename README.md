@@ -1,6 +1,6 @@
 # Dilakna Godagamage - Portfolio
 
-<img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" /> | <img src="https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask&logoColor=white" /> | <img src="https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" /> | <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" /> | <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" /> | <img src="https://img.shields.io/github/last-commit/DilaknaH/portfolio?style=for-the-badge&color=blue" />
+<img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" />  <img src="https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask&logoColor=white" />  <img src="https://img.shields.io/badge/Deployed%20on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" />  <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" />  <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" /> | <img src="https://img.shields.io/github/last-commit/DilaknaH/portfolio?style=for-the-badge&color=blue" />
 
 [Live Demo](portfolio-rho-vert-79.vercel.app)
 
