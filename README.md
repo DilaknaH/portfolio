@@ -1,5 +1,3 @@
-<div align="center">
-
 #Dilakna Godagamage - Portfolio
 
 <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" />
@@ -9,13 +7,7 @@
 <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" />
 <img src="https://img.shields.io/github/last-commit/DilaknaH/portfolio?style=for-the-badge&color=blue" />
 
-<br/>
-
-**A modern, fully responsive personal portfolio website built with Python & Flask — deployed permanently for free.**
-
 [Live Demo](portfolio-rho-vert-79.vercel.app)
-
-</div>
 
 ---
 
