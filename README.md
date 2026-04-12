@@ -8,7 +8,7 @@
 
 ---
 
-Click [here](https://portfolio-rho-vert-79.vercel.app) to the Live App.
+**[Live Portfolio](https://portfolio-rho-vert-79.vercel.app)**
 
 ---
 
@@ -87,7 +87,7 @@ This portfolio is continuously being improved with new projects, features, and d
 
 ## Author
 
-Dilakna Godagamage
+**Dilakna Godagamage**
 
 Undergraduate | KDU | AI & Machine Learning Enthusiast 
 
