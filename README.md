@@ -10,13 +10,13 @@
 
 Click [here](https://portfolio-rho-vert-79.vercel.app) to the Live App.
 
-<img width="1892" height="901" alt="image" src="https://github.com/user-attachments/assets/2d022487-0b84-47ad-9a57-fb2285c05604" />
-
 ---
 
 ## Overview
 
 This repository contains my personal portfolio website, designed to showcase my projects, technical skills, and development journey.
+
+<img width="1892" height="901" alt="image" src="https://github.com/user-attachments/assets/2d022487-0b84-47ad-9a57-fb2285c05604" />
 
 ---
 
@@ -85,11 +85,13 @@ This portfolio is continuously being improved with new projects, features, and d
 
 ---
 
-## Dilakna Godagamage
+## Author
+
+Dilakna Godagamage
 
 Undergraduate | KDU | AI & Machine Learning Enthusiast 
 
-Feel free to connect with me through : [LinkedIn](https://www.linkedin.com/in/dilakna-godagamage-53166326b/) 
+*Feel free to connect with me through* : [LinkedIn](https://www.linkedin.com/in/dilakna-godagamage-53166326b/) 
 
 ---
 
