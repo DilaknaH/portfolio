@@ -8,7 +8,7 @@
 
 ---
 
-### [View Live Portfolio](https://portfolio-rho-vert-79.vercel.app)
+### 🔗 Click to [View the Live Portfolio](https://portfolio-rho-vert-79.vercel.app)
 
 ---
 
