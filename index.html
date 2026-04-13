@@ -365,7 +365,6 @@
         }
       }
 
-      /* ── TYPEWRITER "I build ___" ── */
       .hero-tw {
         font-size: clamp(1rem, 2.5vw, 1.35rem);
         color: var(--txt2);
@@ -729,94 +728,208 @@
         color: var(--green);
       }
 
-      .skills-layout {
+      /* ─── SKILLS DOMAIN CARDS ─── */
+      .skills-domain-grid {
         display: grid;
-        grid-template-columns: 1fr 280px;
-        gap: 3rem;
-        align-items: start;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 2.5rem;
       }
-      .skill-item {
-        margin-bottom: 1.4rem;
-      }
-      .sk-header {
+
+      .domain-card {
+        background: var(--bg3);
+        border: 1px solid var(--border3);
+        border-radius: 16px;
+        padding: 1.4rem 1.2rem 1.2rem;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-      }
-      .sk-name {
-        font-size: 0.88rem;
-        font-weight: 500;
-        color: var(--txt);
-      }
-      .sk-pct {
-        font-family: var(--mono);
-        font-size: 0.72rem;
-        color: var(--cyan);
-      }
-      .sk-track {
-        height: 2px;
-        background: var(--bg5);
-        border-radius: 100px;
+        flex-direction: column;
+        gap: 1rem;
         position: relative;
-        overflow: visible;
+        overflow: hidden;
+        cursor: default;
+        transition:
+          border-color 0.3s,
+          transform 0.25s,
+          box-shadow 0.3s;
       }
-      .sk-fill {
+      .domain-card::after {
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
-        height: 100%;
-        background: linear-gradient(90deg, var(--cyan), var(--violet2));
-        border-radius: 100px;
-        width: 0;
-        transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
-        box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+        right: 0;
+        height: 2px;
+        background: var(
+          --card-accent,
+          linear-gradient(90deg, var(--cyan), var(--violet2))
+        );
+        opacity: 0.5;
+        transition: opacity 0.3s;
       }
-      .sk-fill::after {
-        content: "";
-        position: absolute;
-        right: -1px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: white;
+      .domain-card:hover {
+        border-color: var(--border);
+        transform: translateY(-4px);
         box-shadow:
-          0 0 10px var(--cyan),
-          0 0 20px var(--cyan);
+          0 16px 40px rgba(0, 0, 0, 0.35),
+          0 0 20px rgba(0, 212, 255, 0.05);
+      }
+      .domain-card:hover::after {
+        opacity: 1;
       }
 
-      .tags-cloud {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+      .domain-card.accent-cyan {
+        --card-accent: linear-gradient(90deg, #00d4ff, #00aacc);
       }
-      .skill-tag {
-        font-family: var(--mono);
-        font-size: 0.65rem;
-        padding: 0.25rem 0.65rem;
+      .domain-card.accent-violet {
+        --card-accent: linear-gradient(90deg, #7c3aed, #a855f7);
+      }
+      .domain-card.accent-green {
+        --card-accent: linear-gradient(90deg, #10b981, #34d399);
+      }
+      .domain-card.accent-rose {
+        --card-accent: linear-gradient(90deg, #f43f5e, #fb7185);
+      }
+      .domain-card.accent-amber {
+        --card-accent: linear-gradient(90deg, #f59e0b, #fbbf24);
+      }
+      .domain-card.accent-sky {
+        --card-accent: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      }
+
+      .domain-icon-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .domain-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
         background: var(--cyan4);
         border: 1px solid var(--border);
+      }
+      .domain-card.accent-violet .domain-icon {
+        background: var(--violet3);
+        border-color: rgba(124, 58, 237, 0.25);
+      }
+      .domain-card.accent-green .domain-icon {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+      .domain-card.accent-rose .domain-icon {
+        background: rgba(244, 63, 94, 0.1);
+        border-color: rgba(244, 63, 94, 0.2);
+      }
+      .domain-card.accent-amber .domain-icon {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.2);
+      }
+      .domain-card.accent-sky .domain-icon {
+        background: rgba(14, 165, 233, 0.1);
+        border-color: rgba(14, 165, 233, 0.2);
+      }
+
+      .domain-title {
+        font-family: var(--grotesk);
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--txt);
+        letter-spacing: -0.01em;
+      }
+      .domain-subtitle {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        color: var(--txt3);
+        letter-spacing: 0.06em;
+        margin-top: 0.1rem;
+      }
+
+      .domain-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+      .dtag {
+        font-family: var(--mono);
+        font-size: 0.63rem;
+        padding: 0.22rem 0.6rem;
         border-radius: 100px;
-        color: var(--cyan);
-        letter-spacing: 0.04em;
+        letter-spacing: 0.03em;
+        background: var(--bg4);
+        border: 1px solid var(--border3);
+        color: var(--txt2);
         transition:
           background 0.2s,
+          border-color 0.2s,
+          color 0.2s,
           transform 0.15s;
         cursor: default;
       }
-      .skill-tag:hover {
-        background: var(--cyan3);
-        transform: scale(1.04);
+      .domain-card:hover .dtag {
+        background: var(--bg5);
+        border-color: var(--border2);
+        color: var(--txt);
       }
-      .skill-tag.violet {
+      .dtag.featured {
+        background: var(--cyan4);
+        border-color: var(--border);
+        color: var(--cyan);
+      }
+      .domain-card.accent-violet .dtag.featured {
         background: var(--violet3);
         border-color: rgba(124, 58, 237, 0.3);
         color: var(--violet2);
       }
-      .skill-tag.violet:hover {
-        background: rgba(124, 58, 237, 0.25);
+      .domain-card.accent-green .dtag.featured {
+        background: rgba(16, 185, 129, 0.1);
+        border-color: rgba(16, 185, 129, 0.25);
+        color: var(--green);
+      }
+      .domain-card.accent-rose .dtag.featured {
+        background: rgba(244, 63, 94, 0.1);
+        border-color: rgba(244, 63, 94, 0.25);
+        color: #fb7185;
+      }
+      .domain-card.accent-amber .dtag.featured {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.25);
+        color: #fbbf24;
+      }
+      .domain-card.accent-sky .dtag.featured {
+        background: rgba(14, 165, 233, 0.1);
+        border-color: rgba(14, 165, 233, 0.25);
+        color: #38bdf8;
+      }
+
+      /* Learning note strip */
+      .skills-note {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.4rem;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 12px;
+        margin-top: 0.5rem;
+      }
+      .skills-note-icon {
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+      .skills-note-text {
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--txt3);
+        line-height: 1.6;
+        letter-spacing: 0.02em;
+      }
+      .skills-note-text span {
+        color: var(--cyan);
       }
 
       .bento-grid {
@@ -1424,8 +1537,8 @@
           grid-column: span 1;
           grid-row: span 1;
         }
-        .skills-layout {
-          grid-template-columns: 1fr;
+        .skills-domain-grid {
+          grid-template-columns: 1fr 1fr;
         }
         .cv-layout {
           grid-template-columns: 1fr;
@@ -1438,21 +1551,9 @@
         .stats-grid {
           grid-template-columns: 1fr 1fr;
         }
-      }
-
-      #radar-canvas {
-        max-width: 260px;
-        width: 100%;
-        display: block;
-        margin: 0 auto;
-      }
-      .radar-label {
-        font-family: var(--mono);
-        font-size: 0.62rem;
-        color: var(--txt3);
-        text-align: center;
-        margin-top: 0.5rem;
-        letter-spacing: 0.08em;
+        .skills-domain-grid {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -1723,29 +1824,123 @@
           </h2>
           <p class="sec-sub rv">What I bring to the table</p>
 
-          <div class="skills-layout">
-            <div class="rv-l">
-              <div id="skill-list"></div>
-              <div style="margin-top: 2rem">
-                <p
-                  style="
-                    font-family: var(--mono);
-                    font-size: 0.68rem;
-                    color: var(--txt3);
-                    letter-spacing: 0.1em;
-                    text-transform: uppercase;
-                    margin-bottom: 0.75rem;
-                  "
-                >
-                  Tech Stack
-                </p>
-                <div class="tags-cloud" id="tags-cloud"></div>
+          <div class="skills-domain-grid rv">
+            <div class="domain-card accent-cyan">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Programming</div>
+                  <div class="domain-subtitle">Core languages</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured">Python</span>
+                <span class="dtag featured">SQL</span>
+                <span class="dtag">Bash(Basics)</span>
               </div>
             </div>
-            <div class="rv-r">
-              <canvas id="radar-canvas" width="260" height="260"></canvas>
-              <p class="radar-label">capability radar · self-assessed</p>
+
+            <div class="domain-card accent-violet">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Machine Learning</div>
+                  <div class="domain-subtitle">AI & modelling</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured">Scikit-learn</span>
+                <span class="dtag featured">TensorFlow</span>
+                <span class="dtag">NLP</span>
+                <span class="dtag">Predictive Modelling</span>
+                <span class="dtag">Model Evaluation</span>
+              </div>
             </div>
+
+            <div class="domain-card accent-sky">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Data Analysis</div>
+                  <div class="domain-subtitle">Insights & exploration</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured">Pandas</span>
+                <span class="dtag featured">NumPy</span>
+                <span class="dtag">Matplotlib</span>
+                <span class="dtag">Jupyter</span>
+                <span class="dtag">EDA</span>
+              </div>
+            </div>
+
+            <div class="domain-card accent-green">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">AI Applications</div>
+                  <div class="domain-subtitle">Real-world systems</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured"
+                  >AI-Assisted Applications(Project Based)</span
+                >
+                <span class="dtag">Streamlit App Development</span>
+                <span class="dtag">Computer Vision(Basics)</span>
+                <span class="dtag">Responsible AI</span>
+              </div>
+            </div>
+
+            <div class="domain-card accent-rose">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Data & Databases</div>
+                  <div class="domain-subtitle">Storage & querying</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured">SQL Queries</span>
+                <span class="dtag">Data Cleaning</span>
+                <span class="dtag">Feature Engineering</span>
+                <span class="dtag">CSV / JSON</span>
+              </div>
+            </div>
+
+            <div class="domain-card accent-indigo">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Basic Exposure</div>
+                  <div class="domain-subtitle">Concepts & fundamentals</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag">AI Agents (basic)</span>
+                <span class="dtag">REST APIs (basic integration)</span>
+                <span class="dtag">Responsible AI (awareness)</span>
+                <span class="dtag">Model Workflows (basic)</span>
+              </div>
+            </div>
+
+            <div class="domain-card accent-amber">
+              <div class="domain-icon-row">
+                <div>
+                  <div class="domain-title">Soft Skills</div>
+                  <div class="domain-subtitle">Beyond the code</div>
+                </div>
+              </div>
+              <div class="domain-tags">
+                <span class="dtag featured">Research</span>
+                <span class="dtag featured">Communication</span>
+                <span class="dtag">Team Collaboration</span>
+                <span class="dtag">IEEE</span>
+                <span class="dtag">Leadership</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="skills-note rv">
+            <p class="skills-note-text">
+              Currently an <span>undergraduate student</span> at KDU — actively
+              learning and applying these technologies through coursework,
+              personal projects, and competitions. Always growing.
+            </p>
           </div>
         </section>
 
@@ -1974,7 +2169,7 @@
             <div class="tl-item active">
               <div class="tl-meta">
                 <span class="tl-type lead">Leadership</span>
-                <span class="tl-year">2025 — Present</span>
+                <span class="tl-year">Jan 2025 — Jan 2026</span>
               </div>
               <div class="tl-role">
                 Executive Committee – Membership Director
@@ -1990,7 +2185,7 @@
             <div class="tl-item active">
               <div class="tl-meta">
                 <span class="tl-type lead">Leadership</span>
-                <span class="tl-year">2025 — 2026</span>
+                <span class="tl-year">Mar 2025 — Mar 2026</span>
               </div>
               <div class="tl-role">Secretary Team</div>
               <div class="tl-org">IEEE Student Branch · KDU</div>
@@ -2286,7 +2481,9 @@
       })();
 
       document
-        .querySelectorAll("a, button, .p-card, .stat-card, .tl-item")
+        .querySelectorAll(
+          "a, button, .p-card, .stat-card, .tl-item, .domain-card",
+        )
         .forEach((el) => {
           el.addEventListener("mouseenter", () => ring.classList.add("hov"));
           el.addEventListener("mouseleave", () => ring.classList.remove("hov"));
@@ -2372,14 +2569,14 @@
 
       function typeLine() {
         if (li >= LINES.length) {
-          termOut.appendChild(termCursor);
+          if (termOut) termOut.appendChild(termCursor);
           return;
         }
         const line = LINES[li];
         if (ci === 0) {
           currentSpan = document.createElement("span");
           currentSpan.className = "term-line " + line.cls;
-          termOut.appendChild(currentSpan);
+          if (termOut) termOut.appendChild(currentSpan);
         }
         if (ci < line.text.length) {
           currentSpan.textContent = line.text.slice(0, ci + 1);
@@ -2428,188 +2625,7 @@
       }
       twTick();
 
-      /* 8. SKILLS BARS + TAGS */
-      const SKILLS = [
-        { name: "Python", pct: 80 },
-        { name: "Machine Learning", pct: 70 },
-        { name: "Data Analysis & Visualisation", pct: 75 },
-        { name: "SQL", pct: 75 },
-        { name: "Communication & Research", pct: 70 },
-      ];
-      const TAGS_CYAN = [
-        "Python",
-        "TensorFlow",
-        "Scikit-learn",
-        "Pandas",
-        "NumPy",
-        "SQL",
-        "Jupyter",
-      ];
-      const TAGS_VIOLET = ["ML Ops", "Data Viz", "Research", "IEEE"];
-
-      const skillList = document.getElementById("skill-list");
-      SKILLS.forEach((s) => {
-        skillList.insertAdjacentHTML(
-          "beforeend",
-          `
-          <div class="skill-item">
-            <div class="sk-header">
-              <span class="sk-name">${s.name}</span>
-              <span class="sk-pct">${s.pct}%</span>
-            </div>
-            <div class="sk-track">
-              <div class="sk-fill" data-p="${s.pct}"></div>
-            </div>
-          </div>
-        `,
-        );
-      });
-
-      const tagsCloud = document.getElementById("tags-cloud");
-      TAGS_CYAN.forEach((t) =>
-        tagsCloud.insertAdjacentHTML(
-          "beforeend",
-          `<span class="skill-tag">${t}</span>`,
-        ),
-      );
-      TAGS_VIOLET.forEach((t) =>
-        tagsCloud.insertAdjacentHTML(
-          "beforeend",
-          `<span class="skill-tag violet">${t}</span>`,
-        ),
-      );
-
-      const barObs = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting) {
-            document
-              .querySelectorAll(".sk-fill")
-              .forEach((b) => (b.style.width = b.dataset.p + "%"));
-            barObs.disconnect();
-          }
-        },
-        { threshold: 0.3 },
-      );
-      barObs.observe(skillList);
-
-      /* 9. RADAR CHART */
-      (function radarChart() {
-        const cv = document.getElementById("radar-canvas");
-        const ctx = cv.getContext("2d");
-        const CX = 130,
-          CY = 130,
-          R = 95;
-        const LABELS = [
-          "ML/AI",
-          "Python",
-          "Data Viz",
-          "SQL",
-          "Research",
-          "Ballerina",
-          "Comm.",
-        ];
-        const VALS = [0.82, 0.88, 0.85, 0.75, 0.78, 0.65, 0.9];
-        const NR = LABELS.length;
-        let p = 0;
-
-        const ang = (i) => -Math.PI / 2 + ((2 * Math.PI) / NR) * i;
-        const ease = (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t);
-
-        function draw(prog) {
-          ctx.clearRect(0, 0, 260, 260);
-          for (let ring = 1; ring <= 4; ring++) {
-            ctx.beginPath();
-            for (let i = 0; i < NR; i++) {
-              const a = ang(i),
-                rv = (R * ring) / 4;
-              i === 0
-                ? ctx.moveTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv)
-                : ctx.lineTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv);
-            }
-            ctx.closePath();
-            ctx.strokeStyle = "rgba(0,212,255,0.1)";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-          for (let i = 0; i < NR; i++) {
-            ctx.beginPath();
-            ctx.moveTo(CX, CY);
-            ctx.lineTo(CX + Math.cos(ang(i)) * R, CY + Math.sin(ang(i)) * R);
-            ctx.strokeStyle = "rgba(0,212,255,0.08)";
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-          const ep = ease(prog);
-          ctx.beginPath();
-          for (let i = 0; i < NR; i++) {
-            const a = ang(i),
-              rv = R * VALS[i] * ep;
-            i === 0
-              ? ctx.moveTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv)
-              : ctx.lineTo(CX + Math.cos(a) * rv, CY + Math.sin(a) * rv);
-          }
-          ctx.closePath();
-          const grad = ctx.createLinearGradient(CX - R, CY - R, CX + R, CY + R);
-          grad.addColorStop(0, "rgba(0,212,255,0.12)");
-          grad.addColorStop(1, "rgba(124,58,237,0.12)");
-          ctx.fillStyle = grad;
-          ctx.fill();
-          ctx.strokeStyle = "rgba(0,212,255,0.6)";
-          ctx.lineWidth = 1.5;
-          ctx.shadowColor = "rgba(0,212,255,0.4)";
-          ctx.shadowBlur = 8;
-          ctx.stroke();
-          ctx.shadowBlur = 0;
-          for (let i = 0; i < NR; i++) {
-            const a = ang(i),
-              rv = R * VALS[i] * ep;
-            ctx.beginPath();
-            ctx.arc(
-              CX + Math.cos(a) * rv,
-              CY + Math.sin(a) * rv,
-              3.5,
-              0,
-              Math.PI * 2,
-            );
-            ctx.fillStyle = "#00d4ff";
-            ctx.shadowColor = "#00d4ff";
-            ctx.shadowBlur = 8;
-            ctx.fill();
-            ctx.shadowBlur = 0;
-          }
-          ctx.font = '400 10px "Space Mono", monospace';
-          ctx.textAlign = "center";
-          ctx.textBaseline = "middle";
-          for (let i = 0; i < NR; i++) {
-            const a = ang(i),
-              lv = R + 18;
-            ctx.fillStyle = "rgba(71,85,105,0.9)";
-            ctx.fillText(
-              LABELS[i],
-              CX + Math.cos(a) * lv,
-              CY + Math.sin(a) * lv,
-            );
-          }
-        }
-
-        const ro = new IntersectionObserver(
-          (entries) => {
-            if (entries[0].isIntersecting) {
-              ro.disconnect();
-              (function anim() {
-                p = Math.min(p + 0.022, 1);
-                draw(p);
-                if (p < 1) requestAnimationFrame(anim);
-              })();
-            }
-          },
-          { threshold: 0.3 },
-        );
-        ro.observe(cv);
-        draw(0);
-      })();
-
-      /* 10. 3D CARD TILT */
+      /* 8. 3D CARD TILT */
       document.querySelectorAll("[data-tilt]").forEach((card) => {
         card.addEventListener("mousemove", (e) => {
           const r = card.getBoundingClientRect();
@@ -2630,7 +2646,7 @@
         });
       });
 
-      /* 11. MOBILE SIDEBAR & MENU */
+      /* 9. MOBILE SIDEBAR & MENU */
       document.getElementById("mob-ham").onclick = () => {
         document.getElementById("sidebar").classList.toggle("open");
         document.getElementById("mob-nav").classList.toggle("open");
