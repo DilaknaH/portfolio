@@ -795,6 +795,10 @@
       .domain-card.accent-sky {
         --card-accent: linear-gradient(90deg, #0ea5e9, #38bdf8);
       }
+      /* FIX 1: Proper indigo accent for Basic Exposure card */
+      .domain-card.accent-indigo {
+        --card-accent: linear-gradient(90deg, #4f46e5, #818cf8);
+      }
 
       .domain-icon-row {
         display: flex;
@@ -832,6 +836,11 @@
       .domain-card.accent-sky .domain-icon {
         background: rgba(14, 165, 233, 0.1);
         border-color: rgba(14, 165, 233, 0.2);
+      }
+      /* FIX 1: Indigo icon bg */
+      .domain-card.accent-indigo .domain-icon {
+        background: rgba(79, 70, 229, 0.12);
+        border-color: rgba(79, 70, 229, 0.25);
       }
 
       .domain-title {
@@ -904,6 +913,12 @@
         background: rgba(14, 165, 233, 0.1);
         border-color: rgba(14, 165, 233, 0.25);
         color: #38bdf8;
+      }
+      /* FIX 1: Indigo featured tag color */
+      .domain-card.accent-indigo .dtag.featured {
+        background: rgba(79, 70, 229, 0.12);
+        border-color: rgba(79, 70, 229, 0.3);
+        color: #818cf8;
       }
 
       /* Learning note strip */
@@ -1078,6 +1093,33 @@
         border: 1px solid var(--border3);
         border-radius: 6px;
         color: var(--txt3);
+      }
+      /* FIX 3: Tech stack tags — distinct style from category tags */
+      .p-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        padding-top: 0.25rem;
+        border-top: 1px solid var(--border2);
+      }
+      .p-stack-label {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        color: var(--txt3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        width: 100%;
+        margin-bottom: 0.1rem;
+      }
+      .p-stag {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        padding: 0.18rem 0.5rem;
+        background: rgba(0, 212, 255, 0.05);
+        border: 1px solid rgba(0, 212, 255, 0.15);
+        border-radius: 4px;
+        color: var(--cyan2);
+        letter-spacing: 0.02em;
       }
       .p-links {
         display: flex;
@@ -1571,6 +1613,7 @@
       <a href="#skills" onclick="closeMob()">Skills</a>
       <a href="#projects" onclick="closeMob()">Projects</a>
       <a href="#experience" onclick="closeMob()">Experience</a>
+      <a href="#education" onclick="closeMob()">Education</a>
       <a href="#cv" onclick="closeMob()">CV</a>
       <a href="#contact" onclick="closeMob()">Contact</a>
     </div>
@@ -1611,6 +1654,12 @@
             <li>
               <a href="#experience" class="nav-link" data-sec="experience">
                 <span class="nav-line"></span> Experience
+              </a>
+            </li>
+            <!-- FIX 2: Education added to sidebar nav -->
+            <li>
+              <a href="#education" class="nav-link" data-sec="education">
+                <span class="nav-line"></span> Education
               </a>
             </li>
             <li>
@@ -1835,7 +1884,7 @@
               <div class="domain-tags">
                 <span class="dtag featured">Python</span>
                 <span class="dtag featured">SQL</span>
-                <span class="dtag">Bash(Basics)</span>
+                <span class="dtag">Bash (Basics)</span>
               </div>
             </div>
 
@@ -1879,11 +1928,9 @@
                 </div>
               </div>
               <div class="domain-tags">
-                <span class="dtag featured"
-                  >AI-Assisted Applications(Project Based)</span
-                >
+                <span class="dtag featured">AI-Assisted Applications</span>
                 <span class="dtag">Streamlit App Development</span>
-                <span class="dtag">Computer Vision(Basics)</span>
+                <span class="dtag">Computer Vision (Basics)</span>
                 <span class="dtag">Responsible AI</span>
               </div>
             </div>
@@ -1903,6 +1950,7 @@
               </div>
             </div>
 
+            <!-- FIX 1: accent-indigo now has full indigo theme including featured tag color -->
             <div class="domain-card accent-indigo">
               <div class="domain-icon-row">
                 <div>
@@ -1911,8 +1959,8 @@
                 </div>
               </div>
               <div class="domain-tags">
-                <span class="dtag">AI Agents (basic)</span>
-                <span class="dtag">REST APIs (basic integration)</span>
+                <span class="dtag featured">AI Agents (basic)</span>
+                <span class="dtag featured">REST APIs (basic integration)</span>
                 <span class="dtag">Responsible AI (awareness)</span>
                 <span class="dtag">Model Workflows (basic)</span>
               </div>
@@ -1951,6 +1999,7 @@
           <p class="sec-sub rv">Real problems. Real solutions.</p>
 
           <div class="bento-grid">
+            <!-- FIX 3: Tech stack added to each project card -->
             <div class="p-card rv" data-tilt>
               <div class="p-top">
                 <span class="p-num">01 </span>
@@ -1986,6 +2035,14 @@
                 <span class="p-tag">Dysgraphia Support</span>
                 <span class="p-tag">EdTech</span>
                 <span class="p-tag">Inclusive Design</span>
+              </div>
+              <div class="p-stack">
+                <span class="p-stack-label">Tech Stack</span>
+                <span class="p-stag">Python</span>
+                <span class="p-stag">TensorFlow</span>
+                <span class="p-stag">Computer Vision</span>
+                <span class="p-stag">Streamlit</span>
+                <span class="p-stag">OpenCV</span>
               </div>
               <div class="p-links">
                 <a
@@ -2038,6 +2095,14 @@
                 <span class="p-tag">Responsible AI</span>
                 <span class="p-tag">Code Analysis</span>
               </div>
+              <div class="p-stack">
+                <span class="p-stack-label">Tech Stack</span>
+                <span class="p-stag">Python</span>
+                <span class="p-stag">Streamlit</span>
+                <span class="p-stag">AST Parsing</span>
+                <span class="p-stag">Scikit-learn</span>
+                <span class="p-stag">OpenAI API</span>
+              </div>
               <div class="p-links">
                 <a
                   class="p-link gh"
@@ -2087,6 +2152,14 @@
                 <span class="p-tag">Predictive Modelling</span>
                 <span class="p-tag">Mental Health Tech</span>
                 <span class="p-tag">Human-Centred AI</span>
+              </div>
+              <div class="p-stack">
+                <span class="p-stack-label">Tech Stack</span>
+                <span class="p-stag">Python</span>
+                <span class="p-stag">Scikit-learn</span>
+                <span class="p-stag">Pandas</span>
+                <span class="p-stag">Streamlit</span>
+                <span class="p-stag">Matplotlib</span>
               </div>
               <div class="p-links">
                 <a
@@ -2138,6 +2211,13 @@
                 <span class="p-tag">Climate Tech</span>
                 <span class="p-tag">Ballerina</span>
               </div>
+              <div class="p-stack">
+                <span class="p-stack-label">Tech Stack</span>
+                <span class="p-stag">Ballerina</span>
+                <span class="p-stag">REST APIs</span>
+                <span class="p-stag">AI Agents</span>
+                <span class="p-stag">Python</span>
+              </div>
               <div class="p-links">
                 <a
                   class="p-link gh"
@@ -2157,7 +2237,8 @@
           </div>
         </section>
 
-        <!-- EXPERIENCE -->
+        <!-- EXPERIENCE (leadership only) -->
+        <!-- FIX 2: Education entry removed from here -->
         <section id="experience" class="section">
           <p class="eyebrow rv">Journey</p>
           <h2 class="sec-title rv">
@@ -2190,25 +2271,39 @@
               <div class="tl-role">Secretary Team</div>
               <div class="tl-org">IEEE Student Branch · KDU</div>
               <p class="tl-desc">
-                Supported administrative operations,including creating captions
+                Supported administrative operations, including creating captions
                 and content for various events, while contributing to coordinate
                 and communication activities.
               </p>
             </div>
+          </div>
+        </section>
 
+        <!-- FIX 2: Education moved to its own dedicated section -->
+        <section id="education" class="section">
+          <p class="eyebrow rv">Background</p>
+          <h2 class="sec-title rv">
+            <span class="hl">Education</span>
+          </h2>
+          <p class="sec-sub rv">Academic foundation</p>
+
+          <div class="timeline rv">
             <div class="tl-item active">
               <div class="tl-meta">
                 <span class="tl-type edu">Education</span>
                 <span class="tl-year">2023 — Present</span>
               </div>
-              <div class="tl-role">BSc Applied Data Science</div>
+              <div class="tl-role">
+                BSc Applied Data Science & Communication
+              </div>
               <div class="tl-org">
-                General Sir John Kotelawala Defence University
+                General Sir John Kotelawala Defence University · Rathmalana
               </div>
               <p class="tl-desc">
-                BSc Applied Data Science & Communication ,undergraduate degree
-                focused on data science, machine learning, AI and communication
-                technologies. Currently ongoing. Rathmalana campus.
+                Undergraduate degree focused on data science, machine learning,
+                AI and communication technologies. Coursework spans predictive
+                modelling, NLP, data engineering, and responsible AI practices.
+                Currently ongoing.
               </p>
             </div>
           </div>
@@ -2386,7 +2481,6 @@
     </footer>
 
     <script>
-      /* 1. NEURAL NETWORK BACKGROUND */
       const canvas = document.getElementById("neural-canvas");
       const ctx2 = canvas.getContext("2d");
       let W,
@@ -2458,7 +2552,6 @@
       }
       drawNeural();
 
-      /* 2. CUSTOM CURSOR */
       const dot = document.getElementById("c-dot");
       const ring = document.getElementById("c-ring");
       let mx = 0,
@@ -2489,7 +2582,6 @@
           el.addEventListener("mouseleave", () => ring.classList.remove("hov"));
         });
 
-      /* 3. SCROLL PROGRESS BAR */
       window.addEventListener(
         "scroll",
         () => {
@@ -2502,7 +2594,6 @@
         { passive: true },
       );
 
-      /* 4. SIDEBAR ACTIVE SECTION TRACKING */
       const sections = document.querySelectorAll("section[id]");
       const navLinks = document.querySelectorAll(".nav-link");
 
@@ -2522,7 +2613,6 @@
       );
       sections.forEach((s) => secObserver.observe(s));
 
-      /* 5. SCROLL REVEAL */
       const io = new IntersectionObserver(
         (entries) => {
           entries.forEach((e) => {
@@ -2538,7 +2628,6 @@
         .querySelectorAll(".rv, .rv-l, .rv-r")
         .forEach((el) => io.observe(el));
 
-      /* 6. TERMINAL TYPEWRITER */
       const LINES = [
         { text: "$ whoami", cls: "term-prompt", delay: 60 },
         {
@@ -2590,7 +2679,6 @@
       }
       setTimeout(typeLine, 600);
 
-      /* 7. TYPEWRITER — "I build ___" */
       const twRoles = [
         "AI Systems",
         "ML Models",
@@ -2625,7 +2713,6 @@
       }
       twTick();
 
-      /* 8. 3D CARD TILT */
       document.querySelectorAll("[data-tilt]").forEach((card) => {
         card.addEventListener("mousemove", (e) => {
           const r = card.getBoundingClientRect();
@@ -2646,7 +2733,6 @@
         });
       });
 
-      /* 9. MOBILE SIDEBAR & MENU */
       document.getElementById("mob-ham").onclick = () => {
         document.getElementById("sidebar").classList.toggle("open");
         document.getElementById("mob-nav").classList.toggle("open");
